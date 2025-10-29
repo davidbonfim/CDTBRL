@@ -1,0 +1,1596 @@
+#pragma version 11
+#pragma typetrack false
+
+// algopy.arc4.ARC4Contract.approval_program() -> uint64:
+main:
+    intcblock 0 1 32 2
+    bytecblock "allowances" "minters" "total_supply" "reserve_addr" "asset_id" 0x151f7c75 0x0000 "cap" 0x0022
+    txn ApplicationID
+    bnz main_after_if_else@2
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:28
+    // self.allowances = arc4.DynamicArray[arc4.Tuple[arc4.Address, arc4.DynamicArray[arc4.Tuple[arc4.Address, UInt64]]]]()
+    bytec_0 // "allowances"
+    bytec 6 // 0x0000
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:29
+    // self.minters = arc4.DynamicArray[arc4.Address]()
+    bytec 6 // 0x0000
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:30-31
+    // # Add deployer as initial minter
+    // self.minters.append(arc4.Address(Txn.sender))
+    txn Sender
+    concat // on error: max array length exceeded
+    pushbytes 0x0001
+    replace2 0
+    bytec_1 // "minters"
+    swap
+    app_global_put
+
+main_after_if_else@2:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:15
+    // class AlgoCdtStable(ARC4Contract):
+    txn NumAppArgs
+    bz main___algopy_default_create@25
+    txn OnCompletion
+    !
+    assert // OnCompletion must be NoOp
+    txn ApplicationID
+    assert
+    pushbytess 0x1a2d5b2e 0x1259fee2 0x4820b478 0x7f1d43e1 0xd818ce8b 0x9fee7418 0x589bc3fa 0xee1d58b3 0x467bc7a4 0x8a777839 0xed30d968 0x480df71a 0xa26db1c4 0x46909355 0xf45ab88e 0xb1c9baa4 // method "create_asa(string,string,uint64,uint64,address)uint64", method "set_asset(uint64,address)void", method "mint(address,uint64)void", method "burn(uint64)void", method "burn_from(address,uint64)void", method "transfer(address,uint64)void", method "transfer_from(address,address,uint64)void", method "approve(address,uint64)void", method "allowance(address,address)uint64", method "balance_of(address)uint64", method "add_minter(address)void", method "remove_minter(address)void", method "is_minter(address)bool", method "get_total_supply()uint64", method "get_cap()uint64", method "set_reserve(address)void"
+    txna ApplicationArgs 0
+    match create_asa set_asset mint burn burn_from transfer transfer_from approve allowance balance_of add_minter remove_minter is_minter get_total_supply get_cap set_reserve
+    err
+
+main___algopy_default_create@25:
+    txn OnCompletion
+    !
+    txn ApplicationID
+    !
+    &&
+    assert // OnCompletion must be NoOp && can only call when creating
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.create_asa[routing]() -> void:
+create_asa:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:33
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_3 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    txna ApplicationArgs 2
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_3 // 2
+    +
+    dig 1
+    len
+    ==
+    assert // invalid number of bytes for arc4.dynamic_array<arc4.uint8>
+    extract 2 0
+    txna ApplicationArgs 3
+    dup
+    len
+    pushint 8 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    txna ApplicationArgs 4
+    dup
+    len
+    pushint 8 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    txna ApplicationArgs 5
+    dup
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:42-43
+    // # Only deployer can create ASA
+    // assert arc4.Address(Txn.sender) == arc4.Address(Global.creator_address), "Only deployer can create ASA"
+    txn Sender
+    global CreatorAddress
+    ==
+    assert // Only deployer can create ASA
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:45
+    // self.name = name_
+    pushbytes "name"
+    dig 5
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:46
+    // self.symbol = symbol_
+    pushbytes "symbol"
+    dig 4
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:47
+    // self.decimals = decimals_
+    pushbytes "decimals"
+    dig 3
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:48
+    // self.cap = cap_
+    bytec 7 // "cap"
+    dig 2
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:49
+    // self.reserve_addr = reserve_addr
+    bytec_3 // "reserve_addr"
+    dig 1
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:50
+    // self.total_supply = UInt64(0)
+    bytec_2 // "total_supply"
+    intc_0 // 0
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:52-65
+    // # Create ASA with total = cap, clawback = app, reserve = reserve_addr
+    // result = itxn.AssetConfig(
+    //     total=cap_,
+    //     decimals=decimals_,
+    //     default_frozen=False,
+    //     unit_name=symbol_,
+    //     asset_name=name_,
+    //     manager=Global.current_application_address,
+    //     reserve=reserve_addr.native,
+    //     freeze=Global.current_application_address,
+    //     clawback=Global.current_application_address,
+    //     url="https://tatum.io",
+    //     fee=Global.min_txn_fee,
+    // ).submit()
+    itxn_begin
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:64
+    // fee=Global.min_txn_fee,
+    global MinTxnFee
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:59
+    // manager=Global.current_application_address,
+    global CurrentApplicationAddress
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:61-62
+    // freeze=Global.current_application_address,
+    // clawback=Global.current_application_address,
+    dupn 2
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:63
+    // url="https://tatum.io",
+    pushbytes "https://tatum.io"
+    itxn_field ConfigAssetURL
+    itxn_field ConfigAssetClawback
+    itxn_field ConfigAssetFreeze
+    uncover 2
+    itxn_field ConfigAssetReserve
+    itxn_field ConfigAssetManager
+    uncover 4
+    itxn_field ConfigAssetName
+    uncover 3
+    itxn_field ConfigAssetUnitName
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:56
+    // default_frozen=False,
+    intc_0 // 0
+    itxn_field ConfigAssetDefaultFrozen
+    uncover 2
+    itxn_field ConfigAssetDecimals
+    swap
+    itxn_field ConfigAssetTotal
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:52-53
+    // # Create ASA with total = cap, clawback = app, reserve = reserve_addr
+    // result = itxn.AssetConfig(
+    pushint 3 // acfg
+    itxn_field TypeEnum
+    itxn_field Fee
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:52-65
+    // # Create ASA with total = cap, clawback = app, reserve = reserve_addr
+    // result = itxn.AssetConfig(
+    //     total=cap_,
+    //     decimals=decimals_,
+    //     default_frozen=False,
+    //     unit_name=symbol_,
+    //     asset_name=name_,
+    //     manager=Global.current_application_address,
+    //     reserve=reserve_addr.native,
+    //     freeze=Global.current_application_address,
+    //     clawback=Global.current_application_address,
+    //     url="https://tatum.io",
+    //     fee=Global.min_txn_fee,
+    // ).submit()
+    itxn_submit
+    itxn CreatedAssetID
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:67-68
+    // # ID do ASA criado pela inner tx
+    // self.asset_id = result.created_asset.id
+    bytec 4 // "asset_id"
+    dig 1
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:33
+    // @abimethod()
+    itob
+    bytec 5 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.set_asset[routing]() -> void:
+set_asset:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:72
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    len
+    pushint 8 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    txna ApplicationArgs 2
+    dup
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:74-75
+    // # Only deployer can set asset
+    // assert arc4.Address(Txn.sender) == arc4.Address(Global.creator_address), "Only deployer can set asset"
+    txn Sender
+    global CreatorAddress
+    ==
+    assert // Only deployer can set asset
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:77
+    // self.asset_id = asset_id_
+    bytec 4 // "asset_id"
+    dig 2
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:78
+    // self.reserve_addr = reserve_addr_
+    bytec_3 // "reserve_addr"
+    swap
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:80-85
+    // # Reconfigure ASA (ex.: garantir clawback = app)
+    // itxn.AssetConfig(
+    //     config_asset=asset_id_,
+    //     clawback=Global.current_application_address,
+    //     fee=Global.min_txn_fee,
+    // ).submit()
+    itxn_begin
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:84
+    // fee=Global.min_txn_fee,
+    global MinTxnFee
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:83
+    // clawback=Global.current_application_address,
+    global CurrentApplicationAddress
+    itxn_field ConfigAssetClawback
+    swap
+    itxn_field ConfigAsset
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:80-81
+    // # Reconfigure ASA (ex.: garantir clawback = app)
+    // itxn.AssetConfig(
+    pushint 3 // acfg
+    itxn_field TypeEnum
+    itxn_field Fee
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:80-85
+    // # Reconfigure ASA (ex.: garantir clawback = app)
+    // itxn.AssetConfig(
+    //     config_asset=asset_id_,
+    //     clawback=Global.current_application_address,
+    //     fee=Global.min_txn_fee,
+    // ).submit()
+    itxn_submit
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:72
+    // @abimethod()
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.mint[routing]() -> void:
+mint:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:87
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    txna ApplicationArgs 2
+    dup
+    len
+    pushint 8 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:89
+    // assert self._is_minter(arc4.Address(Txn.sender)), "Caller is not a minter"
+    txn Sender
+    callsub _is_minter
+    assert // Caller is not a minter
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:94
+    // assert self.total_supply + amount <= self.cap, "Cap exceeded"
+    intc_0 // 0
+    bytec_2 // "total_supply"
+    app_global_get_ex
+    assert // check self.total_supply exists
+    dig 1
+    +
+    intc_0 // 0
+    bytec 7 // "cap"
+    app_global_get_ex
+    assert // check self.cap exists
+    dig 1
+    >=
+    assert // Cap exceeded
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:95
+    // self.total_supply += amount
+    bytec_2 // "total_supply"
+    swap
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:97-104
+    // # Mint via clawback transfer from reserve to recipient
+    // itxn.AssetTransfer(
+    //     xfer_asset=self.asset_id,
+    //     asset_amount=amount,
+    //     asset_sender=self.reserve_addr.native,
+    //     asset_receiver=to.native,
+    //     fee=Global.min_txn_fee,  # importante
+    // ).submit()
+    itxn_begin
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:103
+    // fee=Global.min_txn_fee,  # importante
+    global MinTxnFee
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:99
+    // xfer_asset=self.asset_id,
+    intc_0 // 0
+    bytec 4 // "asset_id"
+    app_global_get_ex
+    assert // check self.asset_id exists
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:101
+    // asset_sender=self.reserve_addr.native,
+    intc_0 // 0
+    bytec_3 // "reserve_addr"
+    app_global_get_ex
+    assert // check self.reserve_addr exists
+    uncover 4
+    itxn_field AssetReceiver
+    itxn_field AssetSender
+    uncover 2
+    itxn_field AssetAmount
+    itxn_field XferAsset
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:97-98
+    // # Mint via clawback transfer from reserve to recipient
+    // itxn.AssetTransfer(
+    pushint 4 // axfer
+    itxn_field TypeEnum
+    itxn_field Fee
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:97-104
+    // # Mint via clawback transfer from reserve to recipient
+    // itxn.AssetTransfer(
+    //     xfer_asset=self.asset_id,
+    //     asset_amount=amount,
+    //     asset_sender=self.reserve_addr.native,
+    //     asset_receiver=to.native,
+    //     fee=Global.min_txn_fee,  # importante
+    // ).submit()
+    itxn_submit
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:87
+    // @abimethod()
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.burn[routing]() -> void:
+burn:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:106
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    len
+    pushint 8 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:108
+    // self._burn(arc4.Address(Txn.sender), amount)
+    txn Sender
+    swap
+    callsub _burn
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:106
+    // @abimethod()
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.burn_from[routing]() -> void:
+burn_from:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:110
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    txna ApplicationArgs 2
+    dup
+    len
+    pushint 8 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:112
+    // allowance = self._get_allowance(account, arc4.Address(Txn.sender))
+    dig 1
+    txn Sender
+    callsub _get_allowance
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:113
+    // assert allowance >= amount, "Burn amount exceeds allowance"
+    dup
+    dig 2
+    >=
+    assert // Burn amount exceeds allowance
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:114
+    // self._approve(account, arc4.Address(Txn.sender), allowance - amount)
+    txn Sender
+    swap
+    dig 2
+    -
+    dig 3
+    cover 2
+    callsub _approve
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:115
+    // self._burn(account, amount)
+    callsub _burn
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:110
+    // @abimethod()
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.transfer[routing]() -> void:
+transfer:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:130
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    txna ApplicationArgs 2
+    dup
+    len
+    pushint 8 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:132
+    // self._transfer(arc4.Address(Txn.sender), to, amount)
+    txn Sender
+    cover 2
+    callsub _transfer
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:130
+    // @abimethod()
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.transfer_from[routing]() -> void:
+transfer_from:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:134
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    txna ApplicationArgs 2
+    dup
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    txna ApplicationArgs 3
+    dup
+    len
+    pushint 8 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:136
+    // allowance = self._get_allowance(from_, arc4.Address(Txn.sender))
+    dig 2
+    txn Sender
+    callsub _get_allowance
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:137
+    // assert allowance >= amount, "Transfer amount exceeds allowance"
+    dup
+    dig 2
+    >=
+    assert // Transfer amount exceeds allowance
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:138
+    // self._approve(from_, arc4.Address(Txn.sender), allowance - amount)
+    txn Sender
+    swap
+    dig 2
+    -
+    dig 4
+    cover 2
+    callsub _approve
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:139
+    // self._transfer(from_, to, amount)
+    callsub _transfer
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:134
+    // @abimethod()
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.approve[routing]() -> void:
+approve:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:152
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    txna ApplicationArgs 2
+    dup
+    len
+    pushint 8 // 8
+    ==
+    assert // invalid number of bytes for arc4.uint64
+    btoi
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:154
+    // self._approve(arc4.Address(Txn.sender), spender, amount)
+    txn Sender
+    cover 2
+    callsub _approve
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:152
+    // @abimethod()
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.allowance[routing]() -> void:
+allowance:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:176
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    txna ApplicationArgs 2
+    dup
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:178
+    // return self._get_allowance(owner, spender)
+    callsub _get_allowance
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:176
+    // @abimethod()
+    itob
+    bytec 5 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.balance_of[routing]() -> void:
+balance_of:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:195
+    // @abimethod()
+    txna ApplicationArgs 1
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    pushbytes 0x151f7c750000000000000000
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.add_minter[routing]() -> void:
+add_minter:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:200
+    // @abimethod()
+    txna ApplicationArgs 1
+    dupn 2
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:202
+    // assert self._is_minter(arc4.Address(Txn.sender)), "Caller is not a minter"
+    txn Sender
+    callsub _is_minter
+    assert // Caller is not a minter
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:203
+    // if not self._is_minter(account):
+    callsub _is_minter
+    bnz add_minter_after_if_else@3
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:204
+    // self.minters.append(account)
+    intc_0 // 0
+    bytec_1 // "minters"
+    app_global_get_ex
+    assert // check self.minters exists
+    dup
+    dig 2
+    concat // on error: max array length exceeded
+    swap
+    intc_0 // 0
+    extract_uint16
+    intc_1 // 1
+    +
+    itob
+    extract 6 2
+    replace2 0
+    bytec_1 // "minters"
+    swap
+    app_global_put
+
+add_minter_after_if_else@3:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:200
+    // @abimethod()
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.remove_minter[routing]() -> void:
+remove_minter:
+    intc_0 // 0
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:206
+    // @abimethod()
+    txna ApplicationArgs 1
+    dupn 2
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:208
+    // assert self._is_minter(arc4.Address(Txn.sender)), "Caller is not a minter"
+    txn Sender
+    callsub _is_minter
+    assert // Caller is not a minter
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:209
+    // assert account != arc4.Address(Txn.sender), "Cannot remove self"
+    txn Sender
+    !=
+    assert // Cannot remove self
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:210
+    // new_minters = arc4.DynamicArray[arc4.Address]()
+    bytec 6 // 0x0000
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:211
+    // for minter in self.minters:
+    intc_0 // 0
+    bytec_1 // "minters"
+    app_global_get_ex
+    swap
+    dup
+    uncover 2
+    assert // check self.minters exists
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_0 // 0
+
+remove_minter_for_header@2:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:211
+    // for minter in self.minters:
+    dup
+    dig 2
+    <
+    bz remove_minter_after_for@7
+    dig 2
+    extract 2 0
+    dig 1
+    intc_2 // 32
+    *
+    intc_2 // 32
+    extract3 // on error: index access is out of bounds
+    dup
+    bury 7
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:212
+    // if minter != account:
+    dig 5
+    !=
+    bz remove_minter_after_if_else@5
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:213
+    // new_minters.append(minter)
+    dig 3
+    dup
+    dig 7
+    concat // on error: max array length exceeded
+    swap
+    intc_0 // 0
+    extract_uint16
+    intc_1 // 1
+    +
+    itob
+    extract 6 2
+    replace2 0
+    bury 4
+
+remove_minter_after_if_else@5:
+    dup
+    intc_1 // 1
+    +
+    bury 1
+    b remove_minter_for_header@2
+
+remove_minter_after_for@7:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:214
+    // self.minters = new_minters.copy()
+    bytec_1 // "minters"
+    dig 4
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:206
+    // @abimethod()
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.is_minter[routing]() -> void:
+is_minter:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:216
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:218
+    // return self._is_minter(account)
+    callsub _is_minter
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:216
+    // @abimethod()
+    pushbytes 0x00
+    intc_0 // 0
+    uncover 2
+    setbit
+    bytec 5 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.get_total_supply[routing]() -> void:
+get_total_supply:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:229
+    // return self.total_supply
+    intc_0 // 0
+    bytec_2 // "total_supply"
+    app_global_get_ex
+    assert // check self.total_supply exists
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:227
+    // @abimethod()
+    itob
+    bytec 5 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.get_cap[routing]() -> void:
+get_cap:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:233
+    // return self.cap
+    intc_0 // 0
+    bytec 7 // "cap"
+    app_global_get_ex
+    assert // check self.cap exists
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:231
+    // @abimethod()
+    itob
+    bytec 5 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable.set_reserve[routing]() -> void:
+set_reserve:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:235
+    // @abimethod()
+    txna ApplicationArgs 1
+    dup
+    len
+    intc_2 // 32
+    ==
+    assert // invalid number of bytes for arc4.static_array<arc4.uint8, 32>
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:237-238
+    // # Only deployer can set reserve
+    // assert arc4.Address(Txn.sender) == arc4.Address(Global.creator_address), "Only deployer can set reserve"
+    txn Sender
+    global CreatorAddress
+    ==
+    assert // Only deployer can set reserve
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:239
+    // self.reserve_addr = reserve_addr_
+    bytec_3 // "reserve_addr"
+    swap
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:235
+    // @abimethod()
+    intc_1 // 1
+    return
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable._burn(account: bytes, amount: uint64) -> void:
+_burn:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:117-118
+    // @subroutine
+    // def _burn(self, account: arc4.Address, amount: UInt64) -> None:
+    proto 2 0
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:119
+    // self.total_supply -= amount
+    intc_0 // 0
+    bytec_2 // "total_supply"
+    app_global_get_ex
+    assert // check self.total_supply exists
+    frame_dig -1
+    -
+    bytec_2 // "total_supply"
+    swap
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:121-128
+    // # Burn via clawback transfer from account to reserve
+    // itxn.AssetTransfer(
+    //     xfer_asset=self.asset_id,
+    //     asset_amount=amount,
+    //     asset_sender=account.native,
+    //     asset_receiver=self.reserve_addr.native,
+    //     fee=Global.min_txn_fee,  # importante
+    // ).submit()
+    itxn_begin
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:127
+    // fee=Global.min_txn_fee,  # importante
+    global MinTxnFee
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:123
+    // xfer_asset=self.asset_id,
+    intc_0 // 0
+    bytec 4 // "asset_id"
+    app_global_get_ex
+    assert // check self.asset_id exists
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:126
+    // asset_receiver=self.reserve_addr.native,
+    intc_0 // 0
+    bytec_3 // "reserve_addr"
+    app_global_get_ex
+    assert // check self.reserve_addr exists
+    itxn_field AssetReceiver
+    frame_dig -2
+    itxn_field AssetSender
+    frame_dig -1
+    itxn_field AssetAmount
+    itxn_field XferAsset
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:121-122
+    // # Burn via clawback transfer from account to reserve
+    // itxn.AssetTransfer(
+    pushint 4 // axfer
+    itxn_field TypeEnum
+    itxn_field Fee
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:121-128
+    // # Burn via clawback transfer from account to reserve
+    // itxn.AssetTransfer(
+    //     xfer_asset=self.asset_id,
+    //     asset_amount=amount,
+    //     asset_sender=account.native,
+    //     asset_receiver=self.reserve_addr.native,
+    //     fee=Global.min_txn_fee,  # importante
+    // ).submit()
+    itxn_submit
+    retsub
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable._transfer(from_: bytes, to: bytes, amount: uint64) -> void:
+_transfer:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:141-142
+    // @subroutine
+    // def _transfer(self, from_: arc4.Address, to: arc4.Address, amount: UInt64) -> None:
+    proto 3 0
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:143-150
+    // # Transferência via clawback (o app é o clawback configurado no ASA)
+    // itxn.AssetTransfer(
+    //     xfer_asset=self.asset_id,
+    //     asset_amount=amount,
+    //     asset_sender=from_.native,
+    //     asset_receiver=to.native,
+    //     fee=Global.min_txn_fee,  # importante
+    // ).submit()
+    itxn_begin
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:149
+    // fee=Global.min_txn_fee,  # importante
+    global MinTxnFee
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:145
+    // xfer_asset=self.asset_id,
+    intc_0 // 0
+    bytec 4 // "asset_id"
+    app_global_get_ex
+    assert // check self.asset_id exists
+    frame_dig -2
+    itxn_field AssetReceiver
+    frame_dig -3
+    itxn_field AssetSender
+    frame_dig -1
+    itxn_field AssetAmount
+    itxn_field XferAsset
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:143-144
+    // # Transferência via clawback (o app é o clawback configurado no ASA)
+    // itxn.AssetTransfer(
+    pushint 4 // axfer
+    itxn_field TypeEnum
+    itxn_field Fee
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:143-150
+    // # Transferência via clawback (o app é o clawback configurado no ASA)
+    // itxn.AssetTransfer(
+    //     xfer_asset=self.asset_id,
+    //     asset_amount=amount,
+    //     asset_sender=from_.native,
+    //     asset_receiver=to.native,
+    //     fee=Global.min_txn_fee,  # importante
+    // ).submit()
+    itxn_submit
+    retsub
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable._approve(owner: bytes, spender: bytes, amount: uint64) -> void:
+_approve:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:156-157
+    // @subroutine
+    // def _approve(self, owner: arc4.Address, spender: arc4.Address, amount: UInt64) -> None:
+    proto 3 0
+    intc_0 // 0
+    dupn 3
+    pushbytes ""
+    dupn 11
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:158-159
+    // # Update allowances in state
+    // owner_allowances = self._get_owner_allowances(owner)
+    frame_dig -3
+    callsub _get_owner_allowances
+    dup
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:160
+    // spender_found = False
+    intc_0 // 0
+    swap
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:161
+    // for i in urange(owner_allowances.length):
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_0 // 0
+
+_approve_for_header@1:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:161
+    // for i in urange(owner_allowances.length):
+    frame_dig 19
+    frame_dig 18
+    <
+    bz _approve_after_for@6
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:162
+    // if owner_allowances[i][0] == spender:
+    frame_dig 16
+    extract 2 0
+    frame_dig 19
+    pushint 40 // 40
+    *
+    dup
+    frame_bury 5
+    pushint 40 // 40
+    extract3 // on error: index access is out of bounds
+    extract 0 32
+    frame_dig -2
+    ==
+    bz _approve_after_if_else@4
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:163
+    // owner_allowances[i] = arc4.Tuple((spender, amount))
+    frame_dig -1
+    itob
+    frame_dig -2
+    swap
+    concat
+    frame_dig 5
+    intc_3 // 2
+    +
+    frame_dig 16
+    swap
+    uncover 2
+    replace3 // on error: index access is out of bounds
+    frame_bury 16
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:164
+    // spender_found = True
+    intc_1 // 1
+    frame_bury 17
+
+_approve_after_for@6:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:166
+    // if not spender_found:
+    frame_dig 17
+    bnz _approve_after_if_else@8
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:167
+    // owner_allowances.append(arc4.Tuple((spender, amount)))
+    frame_dig -1
+    itob
+    frame_dig -2
+    swap
+    concat
+    frame_dig 16
+    dup
+    uncover 2
+    concat // on error: max array length exceeded
+    swap
+    intc_0 // 0
+    extract_uint16
+    intc_1 // 1
+    +
+    itob
+    extract 6 2
+    replace2 0
+    frame_bury 16
+
+_approve_after_if_else@8:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:169-170
+    // # Update the allowances array
+    // for i in urange(self.allowances.length):
+    intc_0 // 0
+    bytec_0 // "allowances"
+    app_global_get_ex
+    assert // check self.allowances exists
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    frame_bury 4
+    intc_0 // 0
+    frame_bury 19
+
+_approve_for_header@9:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:169-170
+    // # Update the allowances array
+    // for i in urange(self.allowances.length):
+    frame_dig 19
+    frame_dig 4
+    <
+    bz _approve_after_for@14
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:171
+    // if self.allowances[i][0] == owner:
+    intc_0 // 0
+    bytec_0 // "allowances"
+    app_global_get_ex
+    assert // check self.allowances exists
+    dup
+    extract 2 0
+    swap
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    frame_dig 19
+    dup
+    intc_3 // 2
+    *
+    dup
+    frame_bury 6
+    dig 3
+    swap
+    extract_uint16
+    swap
+    intc_1 // 1
+    +
+    dup
+    frame_bury 7
+    uncover 2
+    dig 1
+    - // on error: index access is out of bounds
+    dig 3
+    len
+    uncover 2
+    intc_3 // 2
+    *
+    dup
+    frame_bury 8
+    dig 4
+    swap
+    extract_uint16
+    uncover 2
+    select
+    substring3
+    extract 0 32
+    frame_dig -3
+    ==
+    bz _approve_after_if_else@12
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:172
+    // self.allowances[i] = arc4.Tuple((owner, owner_allowances.copy()))
+    frame_dig -3
+    bytec 8 // 0x0022
+    concat
+    frame_dig 16
+    concat
+    intc_0 // 0
+    bytec_0 // "allowances"
+    app_global_get_ex
+    assert // check self.allowances exists
+    dup
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    frame_dig 19
+    dup
+    cover 3
+    >
+    assert // index access is out of bounds
+    dup
+    substring 0 2
+    dup
+    frame_bury 3
+    btoi
+    swap
+    extract 2 0
+    dup
+    frame_dig 6
+    extract_uint16
+    dig 1
+    frame_dig 8
+    dup
+    cover 6
+    extract_uint16
+    dig 2
+    len
+    dig 4
+    uncover 6
+    -
+    intc_1 // 1
+    -
+    dig 1
+    uncover 3
+    uncover 2
+    select
+    dup
+    dig 3
+    -
+    frame_bury 13
+    dig 6
+    len
+    frame_bury 12
+    dig 3
+    intc_0 // 0
+    uncover 4
+    substring3
+    uncover 6
+    concat
+    uncover 3
+    uncover 2
+    uncover 3
+    substring3
+    concat
+    frame_bury 2
+    intc_3 // 2
+    *
+    frame_bury 15
+    frame_bury 11
+
+_approve_for_header@23:
+    frame_dig 11
+    frame_dig 15
+    <
+    bz _approve_after_for@25
+    frame_dig 2
+    dup
+    frame_dig 11
+    dup
+    cover 3
+    extract_uint16
+    frame_dig 12
+    +
+    frame_dig 13
+    -
+    itob
+    extract 6 2
+    dig 2
+    swap
+    replace3
+    frame_bury 2
+    intc_3 // 2
+    +
+    frame_bury 11
+    b _approve_for_header@23
+
+_approve_after_for@25:
+    frame_dig 3
+    frame_dig 2
+    concat
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:172
+    // self.allowances[i] = arc4.Tuple((owner, owner_allowances.copy()))
+    bytec_0 // "allowances"
+    swap
+    app_global_put
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:173
+    // return
+    retsub
+
+_approve_after_if_else@12:
+    frame_dig 7
+    frame_bury 19
+    b _approve_for_header@9
+
+_approve_after_for@14:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:174
+    // self.allowances.append(arc4.Tuple((owner, owner_allowances)))
+    intc_0 // 0
+    bytec_0 // "allowances"
+    app_global_get_ex
+    assert // check self.allowances exists
+    frame_dig -3
+    bytec 8 // 0x0022
+    concat
+    frame_dig 16
+    concat
+    dig 1
+    intc_0 // 0
+    extract_uint16
+    dup
+    cover 3
+    frame_bury 9
+    swap
+    extract 2 0
+    frame_bury 0
+    pushbytes 0x0002
+    swap
+    concat
+    frame_bury 2
+    pushbytes 0x
+    frame_bury 1
+    intc_3 // 2
+    *
+    frame_bury 14
+    intc_0 // 0
+    frame_bury 11
+
+_approve_for_header@16:
+    frame_dig 11
+    frame_dig 14
+    <
+    bz _approve_after_for@18
+    frame_dig 0
+    frame_dig 11
+    dup
+    cover 2
+    extract_uint16
+    intc_3 // 2
+    +
+    itob
+    extract 6 2
+    frame_dig 1
+    swap
+    concat
+    frame_bury 1
+    intc_3 // 2
+    +
+    frame_bury 11
+    b _approve_for_header@16
+
+_approve_after_for@18:
+    frame_dig 0
+    len
+    frame_bury 10
+    intc_0 // 0
+    frame_bury 11
+
+_approve_for_header@19:
+    frame_dig 11
+    intc_3 // 2
+    <
+    bz _approve_after_for@21
+    frame_dig 2
+    frame_dig 11
+    dup
+    cover 2
+    extract_uint16
+    frame_dig 10
+    +
+    itob
+    extract 6 2
+    frame_dig 1
+    swap
+    concat
+    frame_bury 1
+    intc_3 // 2
+    +
+    frame_bury 11
+    b _approve_for_header@19
+
+_approve_after_for@21:
+    frame_dig 9
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:174
+    // self.allowances.append(arc4.Tuple((owner, owner_allowances)))
+    intc_1 // 1
+    +
+    itob
+    extract 6 2
+    frame_dig 1
+    concat
+    frame_dig 0
+    frame_dig 14
+    frame_dig 10
+    substring3
+    concat
+    frame_dig 2
+    extract 2 0
+    concat
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:174
+    // self.allowances.append(arc4.Tuple((owner, owner_allowances)))
+    bytec_0 // "allowances"
+    swap
+    app_global_put
+    retsub
+
+_approve_after_if_else@4:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:161
+    // for i in urange(owner_allowances.length):
+    frame_dig 19
+    intc_1 // 1
+    +
+    frame_bury 19
+    b _approve_for_header@1
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable._get_allowance(owner: bytes, spender: bytes) -> uint64:
+_get_allowance:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:180-181
+    // @subroutine
+    // def _get_allowance(self, owner: arc4.Address, spender: arc4.Address) -> UInt64:
+    proto 2 1
+    intc_0 // 0
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:182
+    // owner_allowances = self._get_owner_allowances(owner)
+    frame_dig -2
+    callsub _get_owner_allowances
+    dup
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:183
+    // for allowance in owner_allowances:
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_0 // 0
+
+_get_allowance_for_header@1:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:183
+    // for allowance in owner_allowances:
+    frame_dig 3
+    frame_dig 2
+    <
+    bz _get_allowance_after_for@6
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:183-184
+    // for allowance in owner_allowances:
+    //     if allowance[0] == spender:
+    frame_dig 1
+    extract 2 0
+    frame_dig 3
+    pushint 40 // 40
+    *
+    pushint 40 // 40
+    extract3 // on error: index access is out of bounds
+    dup
+    frame_bury 0
+    extract 0 32
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:184
+    // if allowance[0] == spender:
+    frame_dig -1
+    ==
+    bz _get_allowance_after_if_else@4
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:185
+    // return allowance[1]
+    frame_dig 0
+    intc_2 // 32
+    extract_uint64
+    frame_bury 0
+    retsub
+
+_get_allowance_after_if_else@4:
+    frame_dig 3
+    intc_1 // 1
+    +
+    frame_bury 3
+    b _get_allowance_for_header@1
+
+_get_allowance_after_for@6:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:186
+    // return UInt64(0)
+    intc_0 // 0
+    frame_bury 0
+    retsub
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable._get_owner_allowances(owner: bytes) -> bytes:
+_get_owner_allowances:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:188-189
+    // @subroutine
+    // def _get_owner_allowances(self, owner: arc4.Address) -> arc4.DynamicArray[arc4.Tuple[arc4.Address, UInt64]]:
+    proto 1 1
+    pushbytes ""
+    dup
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:190
+    // for i in urange(self.allowances.length):
+    intc_0 // 0
+    bytec_0 // "allowances"
+    app_global_get_ex
+    assert // check self.allowances exists
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_0 // 0
+
+_get_owner_allowances_for_header@1:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:190
+    // for i in urange(self.allowances.length):
+    frame_dig 3
+    frame_dig 2
+    <
+    bz _get_owner_allowances_after_for@6
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:191
+    // if self.allowances[i][0] == owner:
+    intc_0 // 0
+    bytec_0 // "allowances"
+    app_global_get_ex
+    assert // check self.allowances exists
+    dup
+    extract 2 0
+    swap
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    frame_dig 3
+    dup
+    intc_3 // 2
+    *
+    dup
+    frame_bury 0
+    dig 3
+    swap
+    extract_uint16
+    swap
+    intc_1 // 1
+    +
+    dup
+    cover 4
+    uncover 2
+    dig 1
+    - // on error: index access is out of bounds
+    dig 3
+    len
+    uncover 2
+    intc_3 // 2
+    *
+    dup
+    frame_bury 1
+    dig 4
+    swap
+    extract_uint16
+    uncover 2
+    select
+    substring3
+    extract 0 32
+    frame_dig -1
+    ==
+    bz _get_owner_allowances_after_if_else@4
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:192
+    // return self.allowances[i][1]
+    intc_0 // 0
+    bytec_0 // "allowances"
+    app_global_get_ex
+    assert // check self.allowances exists
+    dup
+    extract 2 0
+    swap
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    dig 1
+    frame_dig 0
+    extract_uint16
+    swap
+    uncover 3
+    - // on error: index access is out of bounds
+    dig 2
+    len
+    dig 3
+    frame_dig 1
+    extract_uint16
+    uncover 2
+    select
+    substring3
+    dup
+    intc_2 // 32
+    extract_uint16
+    dig 1
+    len
+    substring3
+    frame_bury 0
+    retsub
+
+_get_owner_allowances_after_if_else@4:
+    frame_bury 3
+    b _get_owner_allowances_for_header@1
+
+_get_owner_allowances_after_for@6:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:193
+    // return arc4.DynamicArray[arc4.Tuple[arc4.Address, UInt64]]()
+    bytec 6 // 0x0000
+    frame_bury 0
+    retsub
+
+
+// smart_contracts.algo_cdt_stable.contract.AlgoCdtStable._is_minter(account: bytes) -> uint64:
+_is_minter:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:220-221
+    // @subroutine
+    // def _is_minter(self, account: arc4.Address) -> bool:
+    proto 1 1
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:222
+    // for minter in self.minters:
+    intc_0 // 0
+    bytec_1 // "minters"
+    app_global_get_ex
+    swap
+    dup
+    uncover 2
+    assert // check self.minters exists
+    intc_0 // 0
+    extract_uint16 // on error: invalid array length header
+    intc_0 // 0
+
+_is_minter_for_header@1:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:222
+    // for minter in self.minters:
+    frame_dig 2
+    frame_dig 1
+    <
+    bz _is_minter_after_for@6
+    frame_dig 0
+    extract 2 0
+    frame_dig 2
+    intc_2 // 32
+    *
+    intc_2 // 32
+    extract3 // on error: index access is out of bounds
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:223
+    // if minter == account:
+    frame_dig -1
+    ==
+    bz _is_minter_after_if_else@4
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:224
+    // return True
+    intc_1 // 1
+    frame_bury 0
+    retsub
+
+_is_minter_after_if_else@4:
+    frame_dig 2
+    intc_1 // 1
+    +
+    frame_bury 2
+    b _is_minter_for_header@1
+
+_is_minter_after_for@6:
+    // projects/CDTBRL/smart_contracts/algo_cdt_stable/contract.py:225
+    // return False
+    intc_0 // 0
+    frame_bury 0
+    retsub
