@@ -1,101 +1,214 @@
-# CDTBRL
+# CDTBRL – Stablecoin on Algorand
 
-This project has been generated using AlgoKit. See below for default getting started instructions.
+CDTBRL é um projeto baseado em Algorand que cria e administra um ASA (Algorand
+Standard Asset) estável com controle de cunhagem, queima, transferências via
+clawback e um limite rígido de oferta. O contrato foi escrito em Algopy
+(Algorand Python) e exposto via interface ARC‑4.
 
-# Setup
+## Visão Geral
 
-### Pre-requisites
+- **Contrato principal**: `smart_contracts/algo_cdt_stable/contract.py`
+- **Deploy automatizado**: `smart_contracts/algo_cdt_stable/deploy_config.py`
+- **Artefatos gerados**: TEAL (`*.teal`), ARC‑56 (`*.arc56.json`) e mapas
+  (`*.puya.map`)
+- **Moeda**: CDTBRL (6 casas decimais, limite de 100 bilhões de unidades * 10⁶)
+- **Fluxos principais**: criar ASA, adicionar/retirar minters, cunhar, queimar,
+  transferir e gerenciar allowances estilo ERC‑20
 
-- [Python 3.12](https://www.python.org/downloads/) or later
-- [Docker](https://www.docker.com/) (only required for LocalNet)
+## Estrutura do Projeto
 
-> For interactive tour over the codebase, download [vsls-contrib.codetour](https://marketplace.visualstudio.com/items?itemName=vsls-contrib.codetour) extension for VS Code, then open the [`.codetour.json`](./.tours/getting-started-with-your-algokit-project.tour) file in code tour extension.
+```
+projects/CDTBRL/
+├── smart_contracts/
+│   └── algo_cdt_stable/
+│       ├── contract.py              # Código do smart contract (Algopy)
+│       ├── deploy_config.py         # Script de deploy usado pelo AlgoKit
+│       ├── AlgoCdtStable.approval.teal
+│       ├── AlgoCdtStable.clear.teal
+│       ├── AlgoCdtStable.arc56.json
+│       └── __main__.py              # Ponto de entrada para `poetry run`
+├── pyproject.toml                   # Dependências (Poetry)
+└── README.md                        # Este documento
+```
 
-### Initial Setup
+## Pré-requisitos
 
-#### 1. Clone the Repository
-Start by cloning this repository to your local machine.
+- Python 3.12+
+- Poetry 1.5+
+- AlgoKit CLI 2.3+ (`algokit --version`)
+- Conta Algorand com fundos na rede alvo (testnet/mainnet)
+- Docker (opcional, somente para LocalNet)
 
-#### 2. Install Pre-requisites
-Ensure the following pre-requisites are installed and properly configured:
+## Setup Rápido
 
-- **Docker**: Required for running a local Algorand network. [Install Docker](https://www.docker.com/).
-- **AlgoKit CLI**: Essential for project setup and operations. Install the latest version from [AlgoKit CLI Installation Guide](https://github.com/algorandfoundation/algokit-cli#install). Verify installation with `algokit --version`, expecting `2.0.0` or later.
+```bash
+# 1. Instalar dependências Python
+poetry install
 
-#### 3. Bootstrap Your Local Environment
-Run the following commands within the project folder:
+# 2. (opcional) Ativar o ambiente virtual
+poetry shell
 
-- **Install Poetry**: Required for Python dependency management. [Installation Guide](https://python-poetry.org/docs/#installation). Verify with `poetry -V` to see version `1.2`+.
-- **Setup Project**: Execute `algokit project bootstrap all` to install dependencies and setup a Python virtual environment in `.venv`.
-- **Configure environment**: Execute `algokit generate env-file -a target_network localnet` to create a `.env.localnet` file with default configuration for `localnet`.
-- **Start LocalNet**: Use `algokit localnet start` to initiate a local Algorand network.
+# 3. Compilar o contrato
+algokit compile py smart_contracts/algo_cdt_stable/contract.py
+# ou: algokit project run build -- algo_cdt_stable
+```
 
-### Development Workflow
+## Configuração de Ambiente
 
-#### Terminal
-Directly manage and interact with your project using AlgoKit commands:
+O deploy espera que a mnemonic do deployer esteja exposta como variável de
+ambiente `DEPLOYER_MNEMONIC`. Configure em um `.env` na raiz do projeto ou
+exporte diretamente:
 
-1. **Build Contracts**: `algokit project run build` compiles all smart contracts. You can also specify a specific contract by passing the name of the contract folder as an extra argument.
-For example: `algokit project run build -- hello_world` will only build the `hello_world` contract.
-2. **Deploy**: Use `algokit project deploy localnet` to deploy contracts to the local network. You can also specify a specific contract by passing the name of the contract folder as an extra argument.
-For example: `algokit project deploy localnet -- hello_world` will only deploy the `hello_world` contract.
+```bash
+export DEPLOYER_MNEMONIC="palavra1 palavra2 ... palavra25"
+```
 
-#### VS Code 
-For a seamless experience with breakpoint debugging and other features:
+Outras variáveis opcionais (consulte AlgoKit docs):
 
-1. **Open Project**: In VS Code, open the repository root.
-2. **Install Extensions**: Follow prompts to install recommended extensions.
-3. **Debugging**:
-   - Use `F5` to start debugging.
-   - **Windows Users**: Select the Python interpreter at `./.venv/Scripts/python.exe` via `Ctrl/Cmd + Shift + P` > `Python: Select Interpreter` before the first run.
+- `ALGOD_SERVER`, `ALGOD_TOKEN`, `ALGOD_PORT`
+- `INDEXER_SERVER`, `INDEXER_TOKEN`, `INDEXER_PORT`
 
-#### JetBrains IDEs
-While primarily optimized for VS Code, JetBrains IDEs are supported:
+Se não forem informadas, o AlgoKit usa endpoints padrão para localnet/testnet.
 
-1. **Open Project**: In your JetBrains IDE, open the repository root.
-2. **Automatic Setup**: The IDE should configure the Python interpreter and virtual environment.
-3. **Debugging**: Use `Shift+F10` or `Ctrl+R` to start debugging. Note: Windows users may encounter issues with pre-launch tasks due to a known bug. See [JetBrains forums](https://youtrack.jetbrains.com/issue/IDEA-277486/Shell-script-configuration-cannot-run-as-before-launch-task) for workarounds.
+## Compilação
 
-## AlgoKit Workspaces and Project Management
-This project supports both standalone and monorepo setups through AlgoKit workspaces. Leverage [`algokit project run`](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/project/run.md) commands for efficient monorepo project orchestration and management across multiple projects within a workspace.
+O comando abaixo gera TEAL, mapas e especificação ARC‑56 sincronizados com o
+contrato:
 
-## AlgoKit Generators
+```bash
+algokit compile py smart_contracts/algo_cdt_stable/contract.py
+```
 
-This template provides a set of [algokit generators](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/generate.md) that allow you to further modify the project instantiated from the template to fit your needs, as well as giving you a base to build your own extensions to invoke via the `algokit generate` command.
+Inclua este passo sempre que modificar `contract.py` antes de qualquer deploy.
 
-### Generate Smart Contract 
+## Deploy
 
-By default the template creates a single `HelloWorld` contract under algo_cdt_stable folder in the `smart_contracts` directory. To add a new contract:
+Todos os fluxos de deploy usam `deploy_config.py`, que:
 
-1. From the root of the project (`../`) execute `algokit generate smart-contract`. This will create a new starter smart contract and deployment configuration file under `{your_contract_name}` subfolder in the `smart_contracts` directory.
-2. Each contract potentially has different creation parameters and deployment steps. Hence, you need to define your deployment logic in `deploy_config.py`file.
-3. `config.py` file will automatically build all contracts in the `smart_contracts` directory. If you want to build specific contracts manually, modify the default code provided by the template in `config.py` file.
+1. Cria ou atualiza a aplicação inteligente (`AlgoCdtStable`).
+2. Financia o endereço da aplicação com 1 ALGO (necessário para taxas das inner
+   transactions).
+3. Chama `create_asa` com os parâmetros padrão e registra o asset id no estado
+   global.
 
-> Please note, above is just a suggested convention tailored for the base configuration and structure of this template. The default code supplied by the template in `config.py` and `index.ts` (if using ts clients) files are tailored for the suggested convention. You are free to modify the structure and naming conventions as you see fit.
+### LocalNet
 
-### Generate '.env' files
+```bash
+algokit localnet start
+algokit project deploy localnet --algo_cdt_stable
+```
 
-By default the template instance does not contain any env files. Using [`algokit project deploy`](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/features/project/deploy.md) against `localnet` | `testnet` | `mainnet` will use default values for `algod` and `indexer` unless overwritten via `.env` or `.env.{target_network}`. 
+### Testnet
 
-To generate a new `.env` or `.env.{target_network}` file, run `algokit generate env-file`
+```bash
+algokit project deploy testnet --algo_cdt_stable
+```
 
-### Debugging Smart Contracts
+### Mainnet
 
-This project is optimized to work with AlgoKit AVM Debugger extension. To activate it:
-Refer to the commented header in the `__main__.py` file in the `smart_contracts` folder.
+Revise os parâmetros (limite, reserva, minters) antes de executar:
 
-If you have opted in to include VSCode launch configurations in your project, you can also use the `Debug TEAL via AlgoKit AVM Debugger` launch configuration to interactively select an available trace file and launch the debug session for your smart contract.
+```bash
+algokit project deploy mainnet --algo_cdt_stable
+```
 
-For information on using and setting up the `AlgoKit AVM Debugger` VSCode extension refer [here](https://github.com/algorandfoundation/algokit-avm-vscode-debugger). To install the extension from the VSCode Marketplace, use the following link: [AlgoKit AVM Debugger extension](https://marketplace.visualstudio.com/items?itemName=algorandfoundation.algokit-avm-vscode-debugger).
+Após o deploy, verifique a aplicação e o ASA:
 
-# Tools
+```bash
+algokit app inspect --app-id <ID> --network testnet
+```
 
-This project makes use of Algorand Python to build Algorand smart contracts. The following tools are in use:
+## Uso do Smart Contract
 
-- [Algorand](https://www.algorand.com/) - Layer 1 Blockchain; [Developer portal](https://dev.algorand.co/), [Why Algorand?](https://dev.algorand.co/getting-started/why-algorand/)
-- [AlgoKit](https://github.com/algorandfoundation/algokit-cli) - One-stop shop tool for developers building on the Algorand network; [docs](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/algokit.md), [intro tutorial](https://github.com/algorandfoundation/algokit-cli/blob/main/docs/tutorials/intro.md)
-- [Algorand Python](https://github.com/algorandfoundation/puya) - A semantically and syntactically compatible, typed Python language that works with standard Python tooling and allows you to express smart contracts (apps) and smart signatures (logic signatures) for deployment on the Algorand Virtual Machine (AVM); [docs](https://github.com/algorandfoundation/puya), [examples](https://github.com/algorandfoundation/puya/tree/main/examples)
-- [AlgoKit Utils](https://github.com/algorandfoundation/algokit-utils-py) - A set of core Algorand utilities that make it easier to build solutions on Algorand.
-- [Poetry](https://python-poetry.org/): Python packaging and dependency management.
-It has also been configured to have a productive dev experience out of the box in [VS Code](https://code.visualstudio.com/), see the [.vscode](./.vscode) folder.
+| Método                        | Quem pode chamar                        | Descrição                                               |
+|------------------------------|-----------------------------------------|---------------------------------------------------------|
+| `create_asa(name, …)`        | Somente o criador do app                | Cria o ASA, define cap, reserva e guarda o asset id     |
+| `set_asset(asset_id, addr)`  | Somente o criador                       | Associa ASA existente e reconfigura clawback            |
+| `mint(to, amount)`           | Minter autorizado                       | Cunha tokens (sujeito ao `cap`)                         |
+| `burn(amount)`               | Qualquer holder                         | Queima da própria conta                                 |
+| `burn_from(account, amount)` | Quem tiver allowance                     | Queima em nome de outro (similar a ERC‑20)              |
+| `transfer(to, amount)`       | Qualquer holder                         | Transfere via clawback                                  |
+| `transfer_from(from, to, amt)`| Spender com allowance                  | Transfere utilizando allowance                          |
+| `approve(spender, amount)`   | Qualquer holder                         | Define allowance                                        |
+| `add_minter(account)`        | Minter atual (inclui criador)           | Adiciona novo minter                                    |
+| `remove_minter(account)`     | Minter atual                            | Remove minter (não pode remover a si mesmo)             |
+| `is_minter(account)`         | Todos                                   | Consulta minters                                        |
+| `get_total_supply()`         | Todos                                   | Retorna supply cunhado                                  |
+| `get_cap()`                  | Todos                                   | Retorna cap                                             |
+| `set_reserve(addr)`          | Criador                                 | Atualiza endereço de reserva                            |
 
+### Exemplos com AlgoKit Client
+
+```python
+from smart_contracts.artifacts.algo_cdt_stable.algo_cdt_stable_client import (
+    AlgoCdtStableClient,
+    MintArgs,
+)
+
+client = AlgoCdtStableClient(
+    algod_client=algorand.client.algod,
+    app_id=<ID>,
+    sender=<conta_minter>,
+)
+
+# Mint 100 tokens (6 casas decimais)
+client.mint(MintArgs(to=<destino>, amount=100_000_000))
+
+# Aprovar spender
+client.approve(spender=<addr>, amount=1_000_000_000)
+```
+
+### Chamadas ABI via CLI
+
+```bash
+algokit app call \
+  --app-id <ID> \
+  --method "mint(address,uint64)void" \
+  --arg "address:<DESTINO>" \
+  --arg "uint64:1000000" \
+  --from <conta_minter> \
+  --network testnet
+```
+
+## Financiamento dos Endereços
+
+- **Endereço da aplicação**: precisa de saldo para inner transactions (taxas).
+  O deploy já envia 1 ALGO, mas em chamadas manuais lembre-se de abastecer.
+- **Reserva (reserve)**: é a conta de onde as cunhagens saem. Deve fazer opt-in
+  ao ASA e possuir o supply total (cap) reservado. Ajuste conforme o seu fluxo.
+
+Para enviar ALGO na testnet:
+
+```bash
+algokit send payment \
+  --from <conta_deployer> \
+  --to <app_address> \
+  --amount 0.2 \
+  --network testnet
+```
+
+## Testes e Qualidade
+
+- Adicione cenários em `smart_contracts/tests/`.
+- Execute com `poetry run pytest`.
+- Sempre compile (`algokit compile py ...`) antes de enviar alterações.
+
+## Troubleshooting
+
+- **`overspend` em inner tx**: abasteça o endereço da aplicação (≥ 0.2 ALGO).
+- **`DEPLOYER_MNEMONIC` ausente**: exporte a variável ou crie um `.env`.
+- **Compilação falha (`created_asset_id`)**: use a sintaxe `result.created_asset.id`
+  conforme implementado no contrato.
+- **ASA não aparece na carteira**: faça opt-in do ativo na conta desejada.
+
+## Recursos Úteis
+
+- [Algorand Developer Portal](https://developer.algorand.org/)
+- [AlgoKit CLI Docs](https://github.com/algorandfoundation/algokit-cli/tree/main/docs)
+- [Algopy / Puya](https://github.com/algorandfoundation/puya)
+- [AlgoKit Utils Python](https://github.com/algorandfoundation/algokit-utils-py)
+
+---
+
+Dúvidas ou sugestões? Abra uma issue ou entre em contato com a equipe. Bons
+desenvolvimentos!
