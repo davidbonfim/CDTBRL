@@ -85,17 +85,6 @@ class AlgoCdtStable(ARC4Contract):
         ).submit()
 
     @abimethod()
-    def seed_reserve(self, amount: UInt64) -> None:
-        assert arc4.Address(Txn.sender) == arc4.Address(Global.creator_address), "Only deployer can seed reserve"
-        itxn.AssetTransfer(
-            xfer_asset=self.asset_id,
-            asset_amount=amount,
-            asset_sender=Global.current_application_address,
-            asset_receiver=self.reserve_addr.native,
-            fee=Global.min_txn_fee,
-        ).submit()
-
-    @abimethod()
     def mint(self, to: arc4.Address, amount: UInt64) -> None:
         assert self._is_minter(arc4.Address(Txn.sender)), "Caller is not a minter"
         self._mint(to, amount)
@@ -105,11 +94,11 @@ class AlgoCdtStable(ARC4Contract):
         assert self.total_supply + amount <= self.cap, "Cap exceeded"
         self.total_supply += amount
 
-        # Mint via clawback transfer from reserve to recipient
+        # Mint via clawback transfer from the app escrow to the recipient
         itxn.AssetTransfer(
             xfer_asset=self.asset_id,
             asset_amount=amount,
-            asset_sender=self.reserve_addr.native,
+            asset_sender=Global.current_application_address,
             asset_receiver=to.native,
             fee=Global.min_txn_fee,  # importante
         ).submit()
@@ -129,12 +118,12 @@ class AlgoCdtStable(ARC4Contract):
     def _burn(self, account: arc4.Address, amount: UInt64) -> None:
         self.total_supply -= amount
 
-        # Burn via clawback transfer from account to reserve
+        # Burn via clawback transfer from account back into the app escrow
         itxn.AssetTransfer(
             xfer_asset=self.asset_id,
             asset_amount=amount,
             asset_sender=account.native,
-            asset_receiver=self.reserve_addr.native,
+            asset_receiver=Global.current_application_address,
             fee=Global.min_txn_fee,  # importante
         ).submit()
 
