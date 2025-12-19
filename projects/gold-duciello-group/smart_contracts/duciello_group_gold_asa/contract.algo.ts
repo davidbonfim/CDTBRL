@@ -1,4 +1,5 @@
 import {
+  Bytes,
   Contract,
   GlobalState,
   Global,
@@ -9,6 +10,12 @@ import {
   log,
   uint64,
 } from '@algorandfoundation/algorand-typescript'
+
+const GOLD_ARC3_URL =
+  'https://raw.githubusercontent.com/davidbonfim/CDTBRL/main/projects/gold-duciello-group/assets/arc3/duciello-group-gold.json#arc3'
+const GOLD_ARC3_METADATA_HASH = Bytes.fromHex('b177eb098465a40324e1ace842007278932ba50aacfd116a45a654136ce02fb1', {
+  length: 32,
+})
 
 export class DucielloGroupGoldAsa extends Contract {
   // Armazena o ID do token de ouro criado pelo contrato
@@ -25,6 +32,8 @@ export class DucielloGroupGoldAsa extends Contract {
         unitName: 'GOLD',
         total: 1_000_000,
         decimals: 0, // 1 token = 1 grama
+        url: GOLD_ARC3_URL,
+        metadataHash: GOLD_ARC3_METADATA_HASH,
         manager: this.app.address,
         reserve: this.app.address,
         freeze: this.app.address,

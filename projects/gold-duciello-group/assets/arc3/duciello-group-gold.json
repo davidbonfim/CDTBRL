@@ -1,0 +1,12 @@
+{
+  "name": "Duciello Group Gold",
+  "description": "Token de ouro físico (1 token = 1 grama) emitido pela Duciello Group. Resgate físico via processo off-chain.",
+  "image": "https://raw.githubusercontent.com/davidbonfim/CDTBRL/main/projects/gold-duciello-group/assets/images/duciello-group-gold.png",
+  "image_mimetype": "image/png",
+  "properties": {
+    "unitName": "GOLD",
+    "decimals": 0,
+    "total": 1000000
+  }
+}
+
