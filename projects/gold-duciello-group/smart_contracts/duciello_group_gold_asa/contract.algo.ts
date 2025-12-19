@@ -4,6 +4,7 @@ import {
   GlobalState,
   Global,
   Txn,
+  assert,
   arc4,
   gtxn,
   itxn,
@@ -24,23 +25,23 @@ export class DucielloGroupGoldAsa extends Contract {
 
   @arc4.abimethod()
   public createGoldAsset(): uint64 {
-    assert(Txn.sender === this.app.creator, 'Apenas o criador pode criar o ativo GOLD')
+    assert(Txn.sender.bytes === Global.creatorAddress.bytes, 'Apenas o criador pode criar o ativo GOLD')
     assert(!this.goldAssetId.hasValue, 'Ativo GOLD já foi criado')
 
     const result = itxn
-	      .assetConfig({
-	        assetName: 'Duciello Group Gold',
-	        unitName: 'GOLD',
-	        total: 1_000_000,
-	        decimals: 0, // 1 token = 1 grama
-	        url: GOLD_ASA_URL,
-	        metadataHash: GOLD_ARC3_METADATA_HASH,
-	        note: GOLD_ARC3_URL,
-	        manager: this.app.address,
-	        reserve: this.app.address,
-	        freeze: this.app.address,
-	        clawback: this.app.address,
-	      })
+      .assetConfig({
+        assetName: 'Duciello Group Gold',
+        unitName: 'GOLD',
+        total: 1_000_000,
+        decimals: 0, // 1 token = 1 grama
+        url: GOLD_ASA_URL,
+        metadataHash: GOLD_ARC3_METADATA_HASH,
+        note: GOLD_ARC3_URL,
+        manager: Global.currentApplicationAddress,
+        reserve: Global.currentApplicationAddress,
+        freeze: Global.currentApplicationAddress,
+        clawback: Global.currentApplicationAddress,
+      })
       .submit()
 
     const createdId = result.createdAsset.id
@@ -55,8 +56,11 @@ export class DucielloGroupGoldAsa extends Contract {
     assert(this.goldAssetId.hasValue, 'Ativo GOLD ainda não foi criado')
 
     assert(axfer.xferAsset.id === this.goldAssetId.value, 'Ativo inválido para resgate')
-    assert(axfer.assetReceiver === this.app.address, 'O destino do axfer deve ser o contrato')
-    assert(axfer.sender === Txn.sender, 'O sender do axfer deve ser o chamador')
+    assert(
+      axfer.assetReceiver.bytes === Global.currentApplicationAddress.bytes,
+      'O destino do axfer deve ser o contrato',
+    )
+    assert(axfer.sender.bytes === Txn.sender.bytes, 'O sender do axfer deve ser o chamador')
     assert(axfer.assetAmount > 0, 'Quantidade inválida para resgate')
     assert(
       axfer.assetSender.bytes === Global.zeroAddress.bytes,

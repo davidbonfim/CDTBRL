@@ -1,0 +1,265 @@
+#pragma version 11
+#pragma typetrack false
+
+// @algorandfoundation/algorand-typescript/arc4/index.d.ts::Contract.approvalProgram() -> uint64:
+main:
+    intcblock 1 0
+    bytecblock "goldAssetId"
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:22
+    // export class DucielloGroupGoldAsa extends Contract {
+    txn NumAppArgs
+    bz main___algots__.defaultCreate@9
+    txn OnCompletion
+    !
+    assert // OnCompletion must be NoOp
+    txn ApplicationID
+    assert
+    pushbytess 0x0ae4db21 0x58d4007c // method "createGoldAsset()uint64", method "redeemGold(axfer)void"
+    txna ApplicationArgs 0
+    match createGoldAsset redeemGold
+    err
+
+main___algots__.defaultCreate@9:
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:22
+    // export class DucielloGroupGoldAsa extends Contract {
+    txn OnCompletion
+    !
+    txn ApplicationID
+    !
+    &&
+    assert // OnCompletion must be NoOp && can only call when creating
+    intc_0 // 1
+    return
+
+
+// smart_contracts/duciello_group_gold_asa/contract.algo.ts::DucielloGroupGoldAsa.createGoldAsset[routing]() -> void:
+createGoldAsset:
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:28
+    // assert(Txn.sender.bytes === Global.creatorAddress.bytes, 'Apenas o criador pode criar o ativo GOLD')
+    txn Sender
+    global CreatorAddress
+    ==
+    assert // Apenas o criador pode criar o ativo GOLD
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:29
+    // assert(!this.goldAssetId.hasValue, 'Ativo GOLD já foi criado')
+    intc_1 // 0
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:24
+    // public goldAssetId = GlobalState<uint64>()
+    bytec_0 // "goldAssetId"
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:29
+    // assert(!this.goldAssetId.hasValue, 'Ativo GOLD já foi criado')
+    app_global_get_ex
+    bury 1
+    !
+    assert // Ativo GOLD já foi criado
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:31-45
+    // const result = itxn
+    //   .assetConfig({
+    //     assetName: 'Duciello Group Gold',
+    //     unitName: 'GOLD',
+    //     total: 1_000_000,
+    //     decimals: 0, // 1 token = 1 grama
+    //     url: GOLD_ASA_URL,
+    //     metadataHash: GOLD_ARC3_METADATA_HASH,
+    //     note: GOLD_ARC3_URL,
+    //     manager: Global.currentApplicationAddress,
+    //     reserve: Global.currentApplicationAddress,
+    //     freeze: Global.currentApplicationAddress,
+    //     clawback: Global.currentApplicationAddress,
+    //   })
+    //   .submit()
+    itxn_begin
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:40
+    // manager: Global.currentApplicationAddress,
+    global CurrentApplicationAddress
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:41-43
+    // reserve: Global.currentApplicationAddress,
+    // freeze: Global.currentApplicationAddress,
+    // clawback: Global.currentApplicationAddress,
+    dupn 3
+    itxn_field ConfigAssetClawback
+    itxn_field ConfigAssetFreeze
+    itxn_field ConfigAssetReserve
+    itxn_field ConfigAssetManager
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:39
+    // note: GOLD_ARC3_URL,
+    pushbytes "https://raw.githubusercontent.com/davidbonfim/CDTBRL/main/projects/gold-duciello-group/assets/arc3/duciello-group-gold.json#arc3"
+    itxn_field Note
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:38
+    // metadataHash: GOLD_ARC3_METADATA_HASH,
+    pushbytes 0xb177eb098465a40324e1ace842007278932ba50aacfd116a45a654136ce02fb1
+    itxn_field ConfigAssetMetadataHash
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:37
+    // url: GOLD_ASA_URL,
+    pushbytes "https://www.duciello.com.br/"
+    itxn_field ConfigAssetURL
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:36
+    // decimals: 0, // 1 token = 1 grama
+    intc_1 // 0
+    itxn_field ConfigAssetDecimals
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:35
+    // total: 1_000_000,
+    pushint 1000000 // 1000000
+    itxn_field ConfigAssetTotal
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:34
+    // unitName: 'GOLD',
+    pushbytes "GOLD"
+    itxn_field ConfigAssetUnitName
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:33
+    // assetName: 'Duciello Group Gold',
+    pushbytes "Duciello Group Gold"
+    itxn_field ConfigAssetName
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:31-44
+    // const result = itxn
+    //   .assetConfig({
+    //     assetName: 'Duciello Group Gold',
+    //     unitName: 'GOLD',
+    //     total: 1_000_000,
+    //     decimals: 0, // 1 token = 1 grama
+    //     url: GOLD_ASA_URL,
+    //     metadataHash: GOLD_ARC3_METADATA_HASH,
+    //     note: GOLD_ARC3_URL,
+    //     manager: Global.currentApplicationAddress,
+    //     reserve: Global.currentApplicationAddress,
+    //     freeze: Global.currentApplicationAddress,
+    //     clawback: Global.currentApplicationAddress,
+    //   })
+    pushint 3 // 3
+    itxn_field TypeEnum
+    intc_1 // 0
+    itxn_field Fee
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:31-45
+    // const result = itxn
+    //   .assetConfig({
+    //     assetName: 'Duciello Group Gold',
+    //     unitName: 'GOLD',
+    //     total: 1_000_000,
+    //     decimals: 0, // 1 token = 1 grama
+    //     url: GOLD_ASA_URL,
+    //     metadataHash: GOLD_ARC3_METADATA_HASH,
+    //     note: GOLD_ARC3_URL,
+    //     manager: Global.currentApplicationAddress,
+    //     reserve: Global.currentApplicationAddress,
+    //     freeze: Global.currentApplicationAddress,
+    //     clawback: Global.currentApplicationAddress,
+    //   })
+    //   .submit()
+    itxn_submit
+    itxn CreatedAssetID
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:24
+    // public goldAssetId = GlobalState<uint64>()
+    bytec_0 // "goldAssetId"
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:48
+    // this.goldAssetId.value = createdId
+    dig 1
+    app_global_put
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:50
+    // log('gold_asset_created', createdId)
+    itob
+    pushbytes "gold_asset_created"
+    dig 1
+    concat
+    log
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:26
+    // @arc4.abimethod()
+    pushbytes 0x151f7c75
+    swap
+    concat
+    log
+    intc_0 // 1
+    return
+
+
+// smart_contracts/duciello_group_gold_asa/contract.algo.ts::DucielloGroupGoldAsa.redeemGold[routing]() -> void:
+redeemGold:
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:54
+    // @arc4.abimethod()
+    txn GroupIndex
+    intc_0 // 1
+    -
+    dup
+    gtxns TypeEnum
+    pushint 4 // axfer
+    ==
+    assert // transaction type is axfer
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:56
+    // assert(this.goldAssetId.hasValue, 'Ativo GOLD ainda não foi criado')
+    intc_1 // 0
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:24
+    // public goldAssetId = GlobalState<uint64>()
+    bytec_0 // "goldAssetId"
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:56
+    // assert(this.goldAssetId.hasValue, 'Ativo GOLD ainda não foi criado')
+    app_global_get_ex
+    assert // Ativo GOLD ainda não foi criado
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:58
+    // assert(axfer.xferAsset.id === this.goldAssetId.value, 'Ativo inválido para resgate')
+    dig 1
+    gtxns XferAsset
+    ==
+    assert // Ativo inválido para resgate
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:60
+    // axfer.assetReceiver.bytes === Global.currentApplicationAddress.bytes,
+    dup
+    gtxns AssetReceiver
+    global CurrentApplicationAddress
+    ==
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:59-62
+    // assert(
+    //   axfer.assetReceiver.bytes === Global.currentApplicationAddress.bytes,
+    //   'O destino do axfer deve ser o contrato',
+    // )
+    assert // O destino do axfer deve ser o contrato
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:63
+    // assert(axfer.sender.bytes === Txn.sender.bytes, 'O sender do axfer deve ser o chamador')
+    dup
+    gtxns Sender
+    txn Sender
+    ==
+    assert // O sender do axfer deve ser o chamador
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:64
+    // assert(axfer.assetAmount > 0, 'Quantidade inválida para resgate')
+    dup
+    gtxns AssetAmount
+    dup
+    assert // Quantidade inválida para resgate
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:66
+    // axfer.assetSender.bytes === Global.zeroAddress.bytes,
+    dig 1
+    gtxns AssetSender
+    global ZeroAddress
+    ==
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:65-68
+    // assert(
+    //   axfer.assetSender.bytes === Global.zeroAddress.bytes,
+    //   'Resgate não permite clawback (assetSender deve ser zero)',
+    // )
+    assert // Resgate não permite clawback (assetSender deve ser zero)
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:70
+    // axfer.assetCloseTo.bytes === Global.zeroAddress.bytes,
+    dig 1
+    gtxns AssetCloseTo
+    global ZeroAddress
+    ==
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:69-72
+    // assert(
+    //   axfer.assetCloseTo.bytes === Global.zeroAddress.bytes,
+    //   'Resgate não permite close-to (assetCloseTo deve ser zero)',
+    // )
+    assert // Resgate não permite close-to (assetCloseTo deve ser zero)
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:75
+    // log('gold_redeem_request', Txn.sender, axfer.assetAmount, axfer.txnId)
+    pushbytes "gold_redeem_request"
+    txn Sender
+    concat
+    swap
+    itob
+    concat
+    swap
+    gtxns TxID
+    concat
+    log
+    // smart_contracts/duciello_group_gold_asa/contract.algo.ts:54
+    // @arc4.abimethod()
+    intc_0 // 1
+    return
