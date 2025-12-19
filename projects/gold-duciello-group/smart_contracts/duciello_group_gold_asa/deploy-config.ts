@@ -23,7 +23,9 @@ export async function deploy() {
     })
   }
 
-  const response = await appClient.send.createGoldAsset()
+  const response = await appClient.send.createGoldAsset({
+    coverAppCallInnerTransactionFees: true,
+  })
   console.log(
     `Created GOLD ASA via ${appClient.appClient.appName} (${appClient.appClient.appId}); goldAssetId=${response.return}`,
   )
