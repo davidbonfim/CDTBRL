@@ -15,7 +15,7 @@ import {
 const GOLD_ASA_URL = 'https://www.duciello.com.br/'
 const GOLD_ARC3_URL =
   'https://raw.githubusercontent.com/davidbonfim/CDTBRL/main/projects/gold-duciello-group/assets/arc3/duciello-group-gold.json#arc3'
-const GOLD_ARC3_METADATA_HASH = Bytes.fromHex('b177eb098465a40324e1ace842007278932ba50aacfd116a45a654136ce02fb1', {
+const GOLD_ARC3_METADATA_HASH = Bytes.fromHex('887b2793e193f76debcc2f8c3030a1e7065b3e7929dae45d894159b47d7bbae0', {
   length: 32,
 })
 
@@ -29,14 +29,14 @@ export class DucielloGroupGoldAsa extends Contract {
     assert(!this.goldAssetId.hasValue, 'Ativo GOLD já foi criado')
 
     const result = itxn
-      .assetConfig({
-        assetName: 'Duciello Group Gold',
-        unitName: 'GOLD',
-        total: 1_000_000,
-        decimals: 0, // 1 token = 1 grama
-        url: GOLD_ASA_URL,
-        metadataHash: GOLD_ARC3_METADATA_HASH,
-        note: GOLD_ARC3_URL,
+	      .assetConfig({
+	        assetName: 'Duciello Group Gold',
+	        unitName: 'GOLD',
+	        total: 40_000_000, // 40 toneladas (1 token = 1 grama)
+	        decimals: 0, // 1 token = 1 grama
+	        url: GOLD_ASA_URL,
+	        metadataHash: GOLD_ARC3_METADATA_HASH,
+	        note: GOLD_ARC3_URL,
         manager: Global.currentApplicationAddress,
         reserve: Global.currentApplicationAddress,
         freeze: Global.currentApplicationAddress,

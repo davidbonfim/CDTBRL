@@ -53,21 +53,21 @@ createGoldAsset:
     !
     assert // Ativo GOLD já foi criado
     // smart_contracts/duciello_group_gold_asa/contract.algo.ts:31-45
-    // const result = itxn
-    //   .assetConfig({
-    //     assetName: 'Duciello Group Gold',
-    //     unitName: 'GOLD',
-    //     total: 1_000_000,
-    //     decimals: 0, // 1 token = 1 grama
-    //     url: GOLD_ASA_URL,
-    //     metadataHash: GOLD_ARC3_METADATA_HASH,
-    //     note: GOLD_ARC3_URL,
-    //     manager: Global.currentApplicationAddress,
-    //     reserve: Global.currentApplicationAddress,
-    //     freeze: Global.currentApplicationAddress,
-    //     clawback: Global.currentApplicationAddress,
-    //   })
-    //   .submit()
+    //     const result = itxn
+    // 	      .assetConfig({
+    // 	        assetName: 'Duciello Group Gold',
+    // 	        unitName: 'GOLD',
+    // 	        total: 40_000_000, // 40 toneladas (1 token = 1 grama)
+    // 	        decimals: 0, // 1 token = 1 grama
+    // 	        url: GOLD_ASA_URL,
+    // 	        metadataHash: GOLD_ARC3_METADATA_HASH,
+    // 	        note: GOLD_ARC3_URL,
+    //         manager: Global.currentApplicationAddress,
+    //         reserve: Global.currentApplicationAddress,
+    //         freeze: Global.currentApplicationAddress,
+    //         clawback: Global.currentApplicationAddress,
+    //       })
+    //       .submit()
     itxn_begin
     // smart_contracts/duciello_group_gold_asa/contract.algo.ts:40
     // manager: Global.currentApplicationAddress,
@@ -87,7 +87,7 @@ createGoldAsset:
     itxn_field Note
     // smart_contracts/duciello_group_gold_asa/contract.algo.ts:38
     // metadataHash: GOLD_ARC3_METADATA_HASH,
-    pushbytes 0xb177eb098465a40324e1ace842007278932ba50aacfd116a45a654136ce02fb1
+    pushbytes 0x887b2793e193f76debcc2f8c3030a1e7065b3e7929dae45d894159b47d7bbae0
     itxn_field ConfigAssetMetadataHash
     // smart_contracts/duciello_group_gold_asa/contract.algo.ts:37
     // url: GOLD_ASA_URL,
@@ -98,8 +98,8 @@ createGoldAsset:
     intc_1 // 0
     itxn_field ConfigAssetDecimals
     // smart_contracts/duciello_group_gold_asa/contract.algo.ts:35
-    // total: 1_000_000,
-    pushint 1000000 // 1000000
+    // total: 40_000_000, // 40 toneladas (1 token = 1 grama)
+    pushint 40000000 // 40000000
     itxn_field ConfigAssetTotal
     // smart_contracts/duciello_group_gold_asa/contract.algo.ts:34
     // unitName: 'GOLD',
@@ -110,40 +110,40 @@ createGoldAsset:
     pushbytes "Duciello Group Gold"
     itxn_field ConfigAssetName
     // smart_contracts/duciello_group_gold_asa/contract.algo.ts:31-44
-    // const result = itxn
-    //   .assetConfig({
-    //     assetName: 'Duciello Group Gold',
-    //     unitName: 'GOLD',
-    //     total: 1_000_000,
-    //     decimals: 0, // 1 token = 1 grama
-    //     url: GOLD_ASA_URL,
-    //     metadataHash: GOLD_ARC3_METADATA_HASH,
-    //     note: GOLD_ARC3_URL,
-    //     manager: Global.currentApplicationAddress,
-    //     reserve: Global.currentApplicationAddress,
-    //     freeze: Global.currentApplicationAddress,
-    //     clawback: Global.currentApplicationAddress,
-    //   })
+    //     const result = itxn
+    // 	      .assetConfig({
+    // 	        assetName: 'Duciello Group Gold',
+    // 	        unitName: 'GOLD',
+    // 	        total: 40_000_000, // 40 toneladas (1 token = 1 grama)
+    // 	        decimals: 0, // 1 token = 1 grama
+    // 	        url: GOLD_ASA_URL,
+    // 	        metadataHash: GOLD_ARC3_METADATA_HASH,
+    // 	        note: GOLD_ARC3_URL,
+    //         manager: Global.currentApplicationAddress,
+    //         reserve: Global.currentApplicationAddress,
+    //         freeze: Global.currentApplicationAddress,
+    //         clawback: Global.currentApplicationAddress,
+    //       })
     pushint 3 // 3
     itxn_field TypeEnum
     intc_1 // 0
     itxn_field Fee
     // smart_contracts/duciello_group_gold_asa/contract.algo.ts:31-45
-    // const result = itxn
-    //   .assetConfig({
-    //     assetName: 'Duciello Group Gold',
-    //     unitName: 'GOLD',
-    //     total: 1_000_000,
-    //     decimals: 0, // 1 token = 1 grama
-    //     url: GOLD_ASA_URL,
-    //     metadataHash: GOLD_ARC3_METADATA_HASH,
-    //     note: GOLD_ARC3_URL,
-    //     manager: Global.currentApplicationAddress,
-    //     reserve: Global.currentApplicationAddress,
-    //     freeze: Global.currentApplicationAddress,
-    //     clawback: Global.currentApplicationAddress,
-    //   })
-    //   .submit()
+    //     const result = itxn
+    // 	      .assetConfig({
+    // 	        assetName: 'Duciello Group Gold',
+    // 	        unitName: 'GOLD',
+    // 	        total: 40_000_000, // 40 toneladas (1 token = 1 grama)
+    // 	        decimals: 0, // 1 token = 1 grama
+    // 	        url: GOLD_ASA_URL,
+    // 	        metadataHash: GOLD_ARC3_METADATA_HASH,
+    // 	        note: GOLD_ARC3_URL,
+    //         manager: Global.currentApplicationAddress,
+    //         reserve: Global.currentApplicationAddress,
+    //         freeze: Global.currentApplicationAddress,
+    //         clawback: Global.currentApplicationAddress,
+    //       })
+    //       .submit()
     itxn_submit
     itxn CreatedAssetID
     // smart_contracts/duciello_group_gold_asa/contract.algo.ts:24

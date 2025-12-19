@@ -3,7 +3,7 @@
   "sources": [
     "../../duciello_group_gold_asa/contract.algo.ts"
   ],
-  "mappings": ";;;;;;;;;;;;;;;;;;;AAqBA;;AAAA;;;AAAA;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;AAAA;;;AAAA;;;;;;AAAA;AAAA;;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;AAAA;AAMW;;AAAqB;;AAArB;AAAP;AACQ;AALH;AAKG;AAAA;;AAAD;AAAP;AAEe;AASF;;AACA;;;;;;;;;;AAFH;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AADQ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AADT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AADK;;;AADH;;;;;;AADG;;;;;;;;AADC;;;;;;;;;;;;;;;;;;;;;;;AAFA;;;;AAAA;;;AAAA;;;AAPV;AAwBL;;AAAA;AAEA;AAAI;;;;;;;;;;;;;;;;;;;;AAAJ;;AAAA;AAAA;AAxBD;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AA4BA;;AAAA;AAAA;AAAA;AAAA;;AAAA;;AAAA;AAAA;AAEQ;AAhCF;AAgCE;AAAP;AAEO;;AAAA;;AAAA;AAAP;AAEE;AAAA;;AAA8B;;AAA9B;AADF;AAIO;AAAA;;AAAuB;;AAAvB;AAAP;AACO;AAAA;;AAAP;AAAA;AAEE;;AAAA;;AAA4B;;AAA5B;AADF;AAKE;;AAAA;;AAA6B;;AAA7B;AADF;AAMI;;;;;;;;;;;;;;;;;;;;;AAAuB;;AAA3B;AAAA;AAAA;AAAA;AAA0D;AAAA;;AAA1D;AAAA;AArBD;AAAA",
+  "mappings": ";;;;;;;;;;;;;;;;;;;AAqBA;;AAAA;;;AAAA;;AAAA;AAAA;AAAA;;AAAA;AAAA;;;;;;;;;;;;AAAA;;;AAAA;;;;;;AAAA;AAAA;;AAAA;AAAA;;AAAA;AAAA;AAAA;AAAA;AAAA;AAMW;;AAAqB;;AAArB;AAAP;AACQ;AALH;AAKG;AAAA;;AAAD;AAAP;AAEe;AASF;;AACA;;;;;;;;;;AAFF;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AADQ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AADT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;AADK;;;AADH;;;;;;;AADG;;;;;;;;AADC;;;;;;;;;;;;;;;;;;;;;;;AAFD;;;;AAAA;;;AAAA;;;AAPV;AAwBL;;AAAA;AAEA;AAAI;;;;;;;;;;;;;;;;;;;;AAAJ;;AAAA;AAAA;AAxBD;;;;;;AAAA;AAAA;AAAA;AAAA;AAAA;AA4BA;;AAAA;AAAA;AAAA;AAAA;;AAAA;;AAAA;AAAA;AAEQ;AAhCF;AAgCE;AAAP;AAEO;;AAAA;;AAAA;AAAP;AAEE;AAAA;;AAA8B;;AAA9B;AADF;AAIO;AAAA;;AAAuB;;AAAvB;AAAP;AACO;AAAA;;AAAP;AAAA;AAEE;;AAAA;;AAA4B;;AAA5B;AADF;AAKE;;AAAA;;AAA6B;;AAA7B;AADF;AAMI;;;;;;;;;;;;;;;;;;;;;AAAuB;;AAA3B;AAAA;AAAA;AAAA;AAA0D;AAAA;;AAA1D;AAAA;AArBD;AAAA",
   "op_pc_offset": 0,
   "pc_events": {
     "1": {
@@ -320,12 +320,12 @@
       "stack_out": []
     },
     "222": {
-      "op": "pushbytes 0xb177eb098465a40324e1ace842007278932ba50aacfd116a45a654136ce02fb1",
+      "op": "pushbytes 0x887b2793e193f76debcc2f8c3030a1e7065b3e7929dae45d894159b47d7bbae0",
       "defined_out": [
-        "0xb177eb098465a40324e1ace842007278932ba50aacfd116a45a654136ce02fb1"
+        "0x887b2793e193f76debcc2f8c3030a1e7065b3e7929dae45d894159b47d7bbae0"
       ],
       "stack_out": [
-        "0xb177eb098465a40324e1ace842007278932ba50aacfd116a45a654136ce02fb1"
+        "0x887b2793e193f76debcc2f8c3030a1e7065b3e7929dae45d894159b47d7bbae0"
       ]
     },
     "256": {
@@ -356,19 +356,19 @@
       "stack_out": []
     },
     "293": {
-      "op": "pushint 1000000 // 1000000",
+      "op": "pushint 40000000 // 40000000",
       "defined_out": [
-        "1000000"
+        "40000000"
       ],
       "stack_out": [
-        "1000000"
+        "40000000"
       ]
     },
-    "297": {
+    "298": {
       "op": "itxn_field ConfigAssetTotal",
       "stack_out": []
     },
-    "299": {
+    "300": {
       "op": "pushbytes \"GOLD\"",
       "defined_out": [
         "\"GOLD\""
@@ -377,11 +377,11 @@
         "\"GOLD\""
       ]
     },
-    "305": {
+    "306": {
       "op": "itxn_field ConfigAssetUnitName",
       "stack_out": []
     },
-    "307": {
+    "308": {
       "op": "pushbytes \"Duciello Group Gold\"",
       "defined_out": [
         "\"Duciello Group Gold\""
@@ -390,11 +390,11 @@
         "\"Duciello Group Gold\""
       ]
     },
-    "328": {
+    "329": {
       "op": "itxn_field ConfigAssetName",
       "stack_out": []
     },
-    "330": {
+    "331": {
       "op": "pushint 3 // 3",
       "defined_out": [
         "3"
@@ -403,24 +403,24 @@
         "3"
       ]
     },
-    "332": {
+    "333": {
       "op": "itxn_field TypeEnum",
       "stack_out": []
     },
-    "334": {
+    "335": {
       "op": "intc_1 // 0",
       "stack_out": [
         "0"
       ]
     },
-    "335": {
+    "336": {
       "op": "itxn_field Fee",
       "stack_out": []
     },
-    "337": {
+    "338": {
       "op": "itxn_submit"
     },
-    "338": {
+    "339": {
       "op": "itxn CreatedAssetID",
       "defined_out": [
         "result.CreatedAssetID#0"
@@ -429,14 +429,14 @@
         "result.CreatedAssetID#0"
       ]
     },
-    "340": {
+    "341": {
       "op": "bytec_0 // \"goldAssetId\"",
       "stack_out": [
         "result.CreatedAssetID#0",
         "\"goldAssetId\""
       ]
     },
-    "341": {
+    "342": {
       "op": "dig 1",
       "defined_out": [
         "\"goldAssetId\"",
@@ -449,13 +449,13 @@
         "result.CreatedAssetID#0 (copy)"
       ]
     },
-    "343": {
+    "344": {
       "op": "app_global_put",
       "stack_out": [
         "result.CreatedAssetID#0"
       ]
     },
-    "344": {
+    "345": {
       "op": "itob",
       "defined_out": [
         "tmp%2#0"
@@ -464,7 +464,7 @@
         "tmp%2#0"
       ]
     },
-    "345": {
+    "346": {
       "op": "pushbytes \"gold_asset_created\"",
       "defined_out": [
         "\"gold_asset_created\"",
@@ -475,7 +475,7 @@
         "\"gold_asset_created\""
       ]
     },
-    "365": {
+    "366": {
       "op": "dig 1",
       "defined_out": [
         "\"gold_asset_created\"",
@@ -488,7 +488,7 @@
         "tmp%2#0 (copy)"
       ]
     },
-    "367": {
+    "368": {
       "op": "concat",
       "defined_out": [
         "tmp%2#0",
@@ -499,13 +499,13 @@
         "tmp%3#0"
       ]
     },
-    "368": {
+    "369": {
       "op": "log",
       "stack_out": [
         "tmp%2#0"
       ]
     },
-    "369": {
+    "370": {
       "op": "pushbytes 0x151f7c75",
       "defined_out": [
         "0x151f7c75",
@@ -516,24 +516,24 @@
         "0x151f7c75"
       ]
     },
-    "375": {
+    "376": {
       "op": "swap",
       "stack_out": [
         "0x151f7c75",
         "tmp%2#0"
       ]
     },
-    "376": {
+    "377": {
       "op": "concat",
       "stack_out": [
         "tmp%2#0"
       ]
     },
-    "377": {
+    "378": {
       "op": "log",
       "stack_out": []
     },
-    "378": {
+    "379": {
       "op": "intc_0 // 1",
       "defined_out": [
         "1"
@@ -542,11 +542,11 @@
         "1"
       ]
     },
-    "379": {
+    "380": {
       "op": "return",
       "stack_out": []
     },
-    "380": {
+    "381": {
       "subroutine": "smart_contracts/duciello_group_gold_asa/contract.algo.ts::DucielloGroupGoldAsa.redeemGold[routing]",
       "params": {},
       "block": "redeemGold",
@@ -559,7 +559,7 @@
         "tmp%0#0"
       ]
     },
-    "382": {
+    "383": {
       "op": "intc_0 // 1",
       "defined_out": [
         "1",
@@ -570,7 +570,7 @@
         "1"
       ]
     },
-    "383": {
+    "384": {
       "op": "-",
       "defined_out": [
         "axfer#0"
@@ -579,7 +579,7 @@
         "axfer#0"
       ]
     },
-    "384": {
+    "385": {
       "op": "dup",
       "defined_out": [
         "axfer#0",
@@ -590,7 +590,7 @@
         "axfer#0 (copy)"
       ]
     },
-    "385": {
+    "386": {
       "op": "gtxns TypeEnum",
       "defined_out": [
         "axfer#0",
@@ -601,7 +601,7 @@
         "gtxn_type%0#0"
       ]
     },
-    "387": {
+    "388": {
       "op": "pushint 4 // axfer",
       "defined_out": [
         "axfer",
@@ -614,7 +614,7 @@
         "axfer"
       ]
     },
-    "389": {
+    "390": {
       "op": "==",
       "defined_out": [
         "axfer#0",
@@ -625,14 +625,14 @@
         "gtxn_type_matches%0#0"
       ]
     },
-    "390": {
+    "391": {
       "error": "transaction type is axfer",
       "op": "assert // transaction type is axfer",
       "stack_out": [
         "axfer#0"
       ]
     },
-    "391": {
+    "392": {
       "op": "intc_1 // 0",
       "defined_out": [
         "0",
@@ -643,7 +643,7 @@
         "0"
       ]
     },
-    "392": {
+    "393": {
       "op": "bytec_0 // \"goldAssetId\"",
       "defined_out": [
         "\"goldAssetId\"",
@@ -656,7 +656,7 @@
         "\"goldAssetId\""
       ]
     },
-    "393": {
+    "394": {
       "op": "app_global_get_ex",
       "defined_out": [
         "_%0#0",
@@ -669,7 +669,7 @@
         "maybe_exists%0#0"
       ]
     },
-    "394": {
+    "395": {
       "error": "Ativo GOLD ainda n\u00e3o foi criado",
       "op": "assert // Ativo GOLD ainda n\u00e3o foi criado",
       "stack_out": [
@@ -677,7 +677,7 @@
         "_%0#0"
       ]
     },
-    "395": {
+    "396": {
       "op": "dig 1",
       "stack_out": [
         "axfer#0",
@@ -685,7 +685,7 @@
         "axfer#0 (copy)"
       ]
     },
-    "397": {
+    "398": {
       "op": "gtxns XferAsset",
       "stack_out": [
         "axfer#0",
@@ -693,7 +693,7 @@
         "tmp%0#0"
       ]
     },
-    "399": {
+    "400": {
       "op": "==",
       "defined_out": [
         "axfer#0",
@@ -704,21 +704,21 @@
         "tmp%1#0"
       ]
     },
-    "400": {
+    "401": {
       "error": "Ativo inv\u00e1lido para resgate",
       "op": "assert // Ativo inv\u00e1lido para resgate",
       "stack_out": [
         "axfer#0"
       ]
     },
-    "401": {
+    "402": {
       "op": "dup",
       "stack_out": [
         "axfer#0",
         "axfer#0 (copy)"
       ]
     },
-    "402": {
+    "403": {
       "op": "gtxns AssetReceiver",
       "defined_out": [
         "axfer#0",
@@ -729,7 +729,7 @@
         "reinterpret_bytes[32]%0#0"
       ]
     },
-    "404": {
+    "405": {
       "op": "global CurrentApplicationAddress",
       "defined_out": [
         "axfer#0",
@@ -742,7 +742,7 @@
         "reinterpret_bytes[32]%1#0"
       ]
     },
-    "406": {
+    "407": {
       "op": "==",
       "defined_out": [
         "axfer#0",
@@ -753,21 +753,21 @@
         "tmp%2#0"
       ]
     },
-    "407": {
+    "408": {
       "error": "O destino do axfer deve ser o contrato",
       "op": "assert // O destino do axfer deve ser o contrato",
       "stack_out": [
         "axfer#0"
       ]
     },
-    "408": {
+    "409": {
       "op": "dup",
       "stack_out": [
         "axfer#0",
         "axfer#0 (copy)"
       ]
     },
-    "409": {
+    "410": {
       "op": "gtxns Sender",
       "defined_out": [
         "axfer#0",
@@ -778,7 +778,7 @@
         "reinterpret_bytes[32]%2#0"
       ]
     },
-    "411": {
+    "412": {
       "op": "txn Sender",
       "defined_out": [
         "axfer#0",
@@ -791,7 +791,7 @@
         "reinterpret_bytes[32]%3#0"
       ]
     },
-    "413": {
+    "414": {
       "op": "==",
       "defined_out": [
         "axfer#0",
@@ -802,21 +802,21 @@
         "tmp%3#0"
       ]
     },
-    "414": {
+    "415": {
       "error": "O sender do axfer deve ser o chamador",
       "op": "assert // O sender do axfer deve ser o chamador",
       "stack_out": [
         "axfer#0"
       ]
     },
-    "415": {
+    "416": {
       "op": "dup",
       "stack_out": [
         "axfer#0",
         "axfer#0 (copy)"
       ]
     },
-    "416": {
+    "417": {
       "op": "gtxns AssetAmount",
       "defined_out": [
         "axfer#0",
@@ -827,7 +827,7 @@
         "tmp%4#0"
       ]
     },
-    "418": {
+    "419": {
       "op": "dup",
       "defined_out": [
         "axfer#0",
@@ -840,7 +840,7 @@
         "tmp%4#0 (copy)"
       ]
     },
-    "419": {
+    "420": {
       "error": "Quantidade inv\u00e1lida para resgate",
       "op": "assert // Quantidade inv\u00e1lida para resgate",
       "stack_out": [
@@ -848,7 +848,7 @@
         "tmp%4#0"
       ]
     },
-    "420": {
+    "421": {
       "op": "dig 1",
       "stack_out": [
         "axfer#0",
@@ -856,7 +856,7 @@
         "axfer#0 (copy)"
       ]
     },
-    "422": {
+    "423": {
       "op": "gtxns AssetSender",
       "defined_out": [
         "axfer#0",
@@ -869,7 +869,7 @@
         "reinterpret_bytes[32]%4#0"
       ]
     },
-    "424": {
+    "425": {
       "op": "global ZeroAddress",
       "defined_out": [
         "axfer#0",
@@ -884,7 +884,7 @@
         "reinterpret_bytes[32]%5#0"
       ]
     },
-    "426": {
+    "427": {
       "op": "==",
       "defined_out": [
         "axfer#0",
@@ -897,7 +897,7 @@
         "tmp%6#0"
       ]
     },
-    "427": {
+    "428": {
       "error": "Resgate n\u00e3o permite clawback (assetSender deve ser zero)",
       "op": "assert // Resgate n\u00e3o permite clawback (assetSender deve ser zero)",
       "stack_out": [
@@ -905,7 +905,7 @@
         "tmp%4#0"
       ]
     },
-    "428": {
+    "429": {
       "op": "dig 1",
       "stack_out": [
         "axfer#0",
@@ -913,7 +913,7 @@
         "axfer#0 (copy)"
       ]
     },
-    "430": {
+    "431": {
       "op": "gtxns AssetCloseTo",
       "defined_out": [
         "axfer#0",
@@ -926,7 +926,7 @@
         "reinterpret_bytes[32]%6#0"
       ]
     },
-    "432": {
+    "433": {
       "op": "global ZeroAddress",
       "defined_out": [
         "axfer#0",
@@ -941,7 +941,7 @@
         "reinterpret_bytes[32]%7#0"
       ]
     },
-    "434": {
+    "435": {
       "op": "==",
       "defined_out": [
         "axfer#0",
@@ -954,7 +954,7 @@
         "tmp%7#0"
       ]
     },
-    "435": {
+    "436": {
       "error": "Resgate n\u00e3o permite close-to (assetCloseTo deve ser zero)",
       "op": "assert // Resgate n\u00e3o permite close-to (assetCloseTo deve ser zero)",
       "stack_out": [
@@ -962,7 +962,7 @@
         "tmp%4#0"
       ]
     },
-    "436": {
+    "437": {
       "op": "pushbytes \"gold_redeem_request\"",
       "defined_out": [
         "\"gold_redeem_request\"",
@@ -975,7 +975,7 @@
         "\"gold_redeem_request\""
       ]
     },
-    "457": {
+    "458": {
       "op": "txn Sender",
       "defined_out": [
         "\"gold_redeem_request\"",
@@ -990,7 +990,7 @@
         "tmp%8#0"
       ]
     },
-    "459": {
+    "460": {
       "op": "concat",
       "defined_out": [
         "axfer#0",
@@ -1003,7 +1003,7 @@
         "tmp%9#0"
       ]
     },
-    "460": {
+    "461": {
       "op": "swap",
       "stack_out": [
         "axfer#0",
@@ -1011,7 +1011,7 @@
         "tmp%4#0"
       ]
     },
-    "461": {
+    "462": {
       "op": "itob",
       "defined_out": [
         "axfer#0",
@@ -1024,7 +1024,7 @@
         "tmp%11#0"
       ]
     },
-    "462": {
+    "463": {
       "op": "concat",
       "defined_out": [
         "axfer#0",
@@ -1035,14 +1035,14 @@
         "tmp%12#0"
       ]
     },
-    "463": {
+    "464": {
       "op": "swap",
       "stack_out": [
         "tmp%12#0",
         "axfer#0"
       ]
     },
-    "464": {
+    "465": {
       "op": "gtxns TxID",
       "defined_out": [
         "tmp%12#0",
@@ -1053,7 +1053,7 @@
         "tmp%13#0"
       ]
     },
-    "466": {
+    "467": {
       "op": "concat",
       "defined_out": [
         "tmp%14#0"
@@ -1062,17 +1062,17 @@
         "tmp%14#0"
       ]
     },
-    "467": {
+    "468": {
       "op": "log",
       "stack_out": []
     },
-    "468": {
+    "469": {
       "op": "intc_0 // 1",
       "stack_out": [
         "1"
       ]
     },
-    "469": {
+    "470": {
       "op": "return",
       "stack_out": []
     }
