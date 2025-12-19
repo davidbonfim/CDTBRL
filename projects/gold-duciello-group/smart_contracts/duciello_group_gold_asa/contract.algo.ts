@@ -11,6 +11,7 @@ import {
   uint64,
 } from '@algorandfoundation/algorand-typescript'
 
+const GOLD_ASA_URL = 'https://www.duciello.com.br/'
 const GOLD_ARC3_URL =
   'https://raw.githubusercontent.com/davidbonfim/CDTBRL/main/projects/gold-duciello-group/assets/arc3/duciello-group-gold.json#arc3'
 const GOLD_ARC3_METADATA_HASH = Bytes.fromHex('b177eb098465a40324e1ace842007278932ba50aacfd116a45a654136ce02fb1', {
@@ -27,18 +28,19 @@ export class DucielloGroupGoldAsa extends Contract {
     assert(!this.goldAssetId.hasValue, 'Ativo GOLD já foi criado')
 
     const result = itxn
-      .assetConfig({
-        assetName: 'Duciello Group Gold',
-        unitName: 'GOLD',
-        total: 1_000_000,
-        decimals: 0, // 1 token = 1 grama
-        url: GOLD_ARC3_URL,
-        metadataHash: GOLD_ARC3_METADATA_HASH,
-        manager: this.app.address,
-        reserve: this.app.address,
-        freeze: this.app.address,
-        clawback: this.app.address,
-      })
+	      .assetConfig({
+	        assetName: 'Duciello Group Gold',
+	        unitName: 'GOLD',
+	        total: 1_000_000,
+	        decimals: 0, // 1 token = 1 grama
+	        url: GOLD_ASA_URL,
+	        metadataHash: GOLD_ARC3_METADATA_HASH,
+	        note: GOLD_ARC3_URL,
+	        manager: this.app.address,
+	        reserve: this.app.address,
+	        freeze: this.app.address,
+	        clawback: this.app.address,
+	      })
       .submit()
 
     const createdId = result.createdAsset.id
