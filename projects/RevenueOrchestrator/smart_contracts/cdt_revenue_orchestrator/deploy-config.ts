@@ -1,5 +1,5 @@
 import { AlgorandClient } from '@algorandfoundation/algokit-utils'
-import { CdtRevenueOrchestratorFactory } from './artifacts/cdt_revenue_orchestrator/CdtRevenueOrchestratorClient'
+import { CdtRevenueOrchestratorFactory } from '../artifacts/cdt_revenue_orchestrator/CdtRevenueOrchestratorClient'
 
 // Below is a showcase of various deployment options you can use in TypeScript Client
 export async function deploy() {
