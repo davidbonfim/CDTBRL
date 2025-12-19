@@ -23,10 +23,12 @@ export async function deploy() {
     })
   }
 
-  const response = await appClient.send.createGoldAsset({
-    coverAppCallInnerTransactionFees: true,
-  })
-  console.log(
-    `Created GOLD ASA via ${appClient.appClient.appName} (${appClient.appClient.appId}); goldAssetId=${response.return}`,
-  )
+  const existingGoldAssetId = await appClient.state.global.goldAssetId()
+  if (existingGoldAssetId) {
+    console.log(`GOLD ASA already created; goldAssetId=${existingGoldAssetId}`)
+    return
+  }
+
+  const response = await appClient.send.createGoldAsset({ coverAppCallInnerTransactionFees: true })
+  console.log(`Created GOLD ASA; goldAssetId=${response.return}`)
 }
